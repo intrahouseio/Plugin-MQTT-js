@@ -1,0 +1,77 @@
+{
+  "description": "MQTT client",
+  "params": [
+
+   {
+				"name": "host",
+				"note": "A IP adress of MQTT broker",
+				"type": "string",
+				"val":  "127.0.0.1"
+			},
+			{
+				"name": "port",
+				"note": "A port of MQTT broker",
+				"type": "number",
+				"val":  "1883"
+			},
+			{
+				"name": "timeout",
+				"note": "A reconnection to broker timeout in seconds",
+				"type": "number",
+				"val":  "1"
+			},
+			{
+				"name": "integration_period",
+				"note": "Period of intergration in seconds",
+				"type": "number",
+				"val":  "1"
+			},
+			{
+				"name": "client_id",
+				"note": "MQTT client ID, max: 23 char.",
+				"type": "string",
+				"val":  "intraclient1"
+			},
+			{
+				"name": "scheme",
+				"note": "MQTT schema for connection",
+				"type": "string",
+				"val":  "tcp"
+			},
+			{
+				"name": "use_password",
+				"note": "Is MQTT brocker using login and password for connection",
+				"type": "cb",
+				"val":  "true"
+			},
+			{
+				"name": "login",
+				"note": "Login for MQTT brocker",
+				"type": "string",
+				"val":  "login"
+			},
+			{
+				"name": "password",
+				"note": "Password for MQTT brocker",
+				"type": "string",
+				"val":  "password"
+			}
+  ],
+  "chpattern": [
+    {
+      "name": "topic",
+      "note": "Topic",
+      "type": "STRING"
+    }
+  ],
+
+
+  "channels": [
+    {}
+  ],
+
+  
+  "actions": [
+    {}
+  ]
+}

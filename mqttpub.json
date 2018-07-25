@@ -1,0 +1,31 @@
+{
+  "description": "MQTT publisher - service plugin",
+  "service":1,
+  "params": [
+
+   {
+				"name": "host",
+				"note": "Host of MQTT broker",
+				"type": "string",
+				"val":  "127.0.0.1"
+			},
+			{
+				"name": "port",
+				"note": "Port of MQTT broker",
+				"type": "number",
+				"val":  "1883"
+			},
+			{
+				"name": "timeout",
+				"note": "Reconnection timeout to broker  in seconds",
+				"type": "number",
+				"val":  "1"
+			}
+			
+  ],
+ 
+  
+  "actions": [
+    {}
+  ]
+}
