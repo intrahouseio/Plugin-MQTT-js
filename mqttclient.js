@@ -1,44 +1,55 @@
 /**
  * mqttclient.js
- * 
- */
+ *   plugin - связь с сервером
+ *   agent - связь с брокером
+ *   store - объект для подготовки и хранения структур 
+ */ 
 
-const util = require('util');
-
+// const util = require("util");
 
 const libplugin = require("./lib/plugin");
 const agent = require("./lib/agent");
+const store = require("./lib/store");
 
-const plugin = new libplugin.Plugin({host:'localhost', port:1883});
-
-// Структуры конкретного плагина
-
-
-plugin.unitId = process.argv[2];
+const plugin = new libplugin.Plugin({ host: "localhost", port: 1883 });
 
 plugin.log("Mqtt client has started.");
 plugin.getFromServer("params");
 
-
 plugin.on("params", () => {
-     
-    // Можно соединиться с брокером
-    agent.start(plugin);
+  plugin.getFromServer("config");
+  plugin.getFromServer("extra");
 
-    plugin.getFromServer("config");
-    plugin.getFromServer("extra");
-
+  // Можно соединиться с брокером
+  agent.start(plugin);
 });
 
-plugin.on("config", () => {
-  if (!plugin.config || !util.isArray(plugin.config)) return;
+plugin.on("config", data => {
+  store.createTopicMap(data);
+});
 
+let currentval=0;
+
+plugin.on("extra", data => {
+    // Нужно подписаться на сервере на эти устройства, получать их значения и передавать
+    // пока передаем по таймеру
+
+    setInterval(sendData, 1000);
+});
+
+function sendData() {
+    plugin.extra.forEach(item => {
+        if (item.topic) {
+            plugin.emit("publish", item.topic,  String(currentval));
+        }
+    });
+    currentval = (currentval) ? 0 : 1;
+}
+
+plugin.on("connect", () => {
   // На каналы нужно подписаться - массив топиков для подписки - выделить темы
-  plugin.emit("subscribe", plugin.config);
+  plugin.emit("subscribe", store.getTopics());
 });
-
-
-
 
 /*
 function next() {
@@ -87,5 +98,3 @@ function next() {
 }
 
 */
-
-

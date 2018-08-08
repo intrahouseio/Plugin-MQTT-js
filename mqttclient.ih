@@ -1,0 +1,6 @@
+{
+    "id":"mqttclient",
+    "description":"MQTT client",
+    "cross":true,
+	"version":"0.0.2"
+}

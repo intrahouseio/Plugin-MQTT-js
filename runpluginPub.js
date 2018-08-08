@@ -11,10 +11,10 @@ ps.on("message", mes => {
         ps.send({ type: "get", params: { host: "192.168.0.140", port: 1883 } });
         break;
 
-      case "config":
+      case "extra":
         ps.send({
           type: "get",
-          config: [
+          extra: [
             { id: "1", topic: "/devices/LAMP1" },
             { id: "3", topic: "/devices/1/DD1" }
           ]
