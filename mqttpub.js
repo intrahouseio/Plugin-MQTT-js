@@ -1,6 +1,6 @@
 /**
- * mqttpub.js
- * Сервисный плагин для публикации данных по mqtt
+ * mqttclient.js
+ * 
  */
 
 const util = require('util');

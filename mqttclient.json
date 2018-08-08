@@ -1,5 +1,6 @@
 {
     "description": "MQTT client",
+    "module":"mqttclient.js",
     "params": [
   
      {
@@ -65,6 +66,25 @@
       }
     ],
   
+    
+    "extrapattern": [
+        {
+          "name": "dn",
+          "note": "Устройство для публикации",
+          "type": "string"
+        },
+        {
+            "name": "topic",
+            "note": "Топик - шаблон для отправки",
+            "type": "string"
+        }
+      ],
+    
+      "extradefault": {
+        "dn": "",
+        "topic": "/devices/${dn}/value ${val}"
+       
+      },
   
     "channels": [
       {}
