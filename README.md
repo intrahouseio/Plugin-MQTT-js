@@ -1,5 +1,7 @@
 # Plugin-Mqtt-js
 
+IntraHouse mqtt plugin.
+
 It's mqtt client without build-in broker.
 
 You can use Mosquitto or other brokers, supported MQTT 3.1.1
