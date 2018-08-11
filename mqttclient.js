@@ -1,17 +1,28 @@
-/**
- * mqttclient.js
- *   plugin - связь с сервером
- *   agent - связь с брокером
- *   store - объект для подготовки и хранения структур 
- */ 
+/*
+ * Copyright (c) 2018 Intra LLC
+ *
+ * MIT LICENSE 
+ * 
+ * Mqtt client
+ */
 
 // const util = require("util");
 
-const libplugin = require("./lib/plugin");
-const agent = require("./lib/agent");
-const store = require("./lib/store");
+const defaultPluginParams = {
+  host: "localhost",
+  port: 1883
+};
 
-const plugin = new libplugin.Plugin({ host: "localhost", port: 1883 });
+// Standard IH plugin
+const plugin = require("./lib/plugin")(defaultPluginParams);
+
+// Wraps a client connection to an MQTT broker
+const agent = require("./lib/agent");
+
+// Converts incoming and outgoing messages
+const converter = require("./lib/converter");
+
+agent.start(plugin);
 
 plugin.log("Mqtt client has started.");
 plugin.getFromServer("params");
@@ -21,80 +32,45 @@ plugin.on("params", () => {
   plugin.getFromServer("extra");
 
   // Можно соединиться с брокером
-  agent.start(plugin);
+  agent.connect(plugin.params);
 });
 
+// Каналы для получения данных
 plugin.on("config", data => {
-  store.createTopicMap(data);
+  converter.createSubMap(data);
 });
-
-let currentval=0;
-
-plugin.on("extra", data => {
-    // Нужно подписаться на сервере на эти устройства, получать их значения и передавать
-    // пока передаем по таймеру
-
-    setInterval(sendData, 1000);
-});
-
-function sendData() {
-    plugin.extra.forEach(item => {
-        if (item.topic) {
-            plugin.emit("publish", item.topic,  String(currentval));
-        }
-    });
-    currentval = (currentval) ? 0 : 1;
-}
 
 plugin.on("connect", () => {
   // На каналы нужно подписаться - массив топиков для подписки - выделить темы
-  plugin.emit("subscribe", store.getTopics());
+  agent.subscribe(converter.getSubMapTopics());
 });
 
-/*
-function next() {
-  console.log("NEXT " + step);
-  switch (step) {
-    case 0: // Запрос на получение параметров
-      getTable("params");
-      step = 1;
-      break;
+// Массив для публикации данных
+plugin.on("extra", data => {
+  converter.saveExtra(data);
 
-    case 1: // Соединение с mqtt брокером
-      plugin.connect();
-      step = 2;
-      break;
+  // Нужно подписаться на сервере IH на эти устройства, получать их значения и передавать
+  let filter = formDeviceFilter(data);
+  if (filter)
+    plugin.sendToServer("sub", { id: "main", event: "devices", filter });
+});
 
-    case 2: // Запрос на получение каналов (устройства mqtt)
-      getTable("config");
-      step = 3;
-      break;
+plugin.on("sub", data => {
+  // Получили данные от сервера по подписке - отправить брокеру
+  if (!data) return;
 
-    case 3: // Подписка на брокере на входящие каналы (устройства mqtt)
-      plugin.sub();
-      step = 4;
-      break;
+  data.forEach(item => {
+    try {
+      let pobj = converter.convertOutgoing(item.dn, item.val);
+      if (pobj) agent.publish(pobj.topic, pobj.message);
+    } catch (e) {
+      plugin.log("Publish error for dn="+item.dn+" value="+item.val+" : "+JSON.stringify(e));
+    }
+  });
+});
 
-    case 4:
-      // Запрос на получение списка для публикации
-      getTable("extra");
-      step = 5;
-      break;
-
-    case 5:
-      // Подписка на ih-сервере на устройства для публикации
-      doIHSub();
-      step = 6;
-      break;
-
-    case 6:
-      // Публиковать полученные от ih-сервера первоначально полученные значения
-      // Далее будут публиковаться при изменении данных (при получении от ih-сервера по подписке)
-      // doPub;
-      step = 7;
-      break;
-    default:
-  }
+function formDeviceFilter(data) {
+  if (!data || !Array.isArray(data)) return;
+  let res = data.filter(item => item.dn).map(item => item.dn);
+  if (res && res.length > 0) return { dn: res.join(",") };
 }
-
-*/
