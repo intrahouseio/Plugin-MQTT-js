@@ -58,7 +58,7 @@ plugin.on("extra", data => {
 plugin.on("sub", data => {
   // Получили данные от сервера по подписке - отправить брокеру
   if (!data) return;
-
+  
   data.forEach(item => {
     try {
       let pobj = converter.convertOutgoing(item.dn, item.val);
@@ -68,6 +68,21 @@ plugin.on("sub", data => {
     }
   });
 });
+
+plugin.on("act", data => {
+    // Получили от сервера команду(ы) для устройства - отправить брокеру
+    // Команда уже готова - там должен быть topic и message
+    if (!data) return;
+    
+    data.forEach(item => {
+      try {
+        
+        if (item.topic) agent.publish(item.topic, item.message || '');
+      } catch (e) {
+        plugin.log("Publish error act: topic="+item.topic+" message="+item.message+" : "+JSON.stringify(e));
+      }
+    });
+  });
 
 function formDeviceFilter(data) {
   if (!data || !Array.isArray(data)) return;

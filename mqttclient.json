@@ -75,7 +75,7 @@
     { "name": "topic", "note": "Topic", "type": "STRING" }
   ],
 
-  "chdefault": {  "desc": "DI", "topic": "/devices/dd1", "dn": "" },
+  "chdefault": { "chan":1, "desc": "DI", "topic": "/devices/dd1", "dn": "" },
 
   "genrules": {
     "AI": { "cl": "SensorA" },
