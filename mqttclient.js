@@ -14,7 +14,7 @@ const defaultPluginParams = {
 };
 
 // Standard IH plugin
-const plugin = require("./lib/plugin")(defaultPluginParams);
+const plugin = require("./lib/plugin").Plugin(defaultPluginParams);
 
 // Wraps a client connection to an MQTT broker
 const agent = require("./lib/agent");
@@ -22,7 +22,10 @@ const agent = require("./lib/agent");
 // Converts incoming and outgoing messages
 const converter = require("./lib/converter");
 
+
+
 agent.start(plugin);
+
 
 plugin.log("Mqtt client has started.");
 plugin.getFromServer("params");
