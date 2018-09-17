@@ -72,10 +72,39 @@
       ]
     },
 
-    { "name": "topic", "note": "Topic", "type": "STRING" }
+    { "name": "topic", "note": "Topic - состояние", "type": "STRING" },
+
+    {
+      "name": "actions",
+      "tabnote": "Исходящие команды",
+      "note": "Команда",
+      "type": "multi",
+      "visible": "data.desc == \"DO\" || data.desc == \"AO\"",
+      "data": {
+        "scheme": {
+          "act": { "name": "Команда", "type": "droplist", "order": 0, "data":[{"id":"on", "name":"on"}, {"id":"off", "name":"off"},{"id":"toggle", "name":"toggle"}] },
+          "topic": { "name": "Topic", "type": "STRING", "order": 1 },
+          "message": { "name": "Message", "type": "STRING", "order": 2 }
+        },
+        "default": {
+          "act": "on",
+          "topic": "/devices/${dn}/command",
+          "message": "on"
+        }
+      }
+    }
   ],
 
-  "chdefault": { "chan":1, "desc": "DI", "topic": "/devices/dd1", "dn": "" },
+  "chdefault": {
+    "chan": 1,
+    "desc": "DI",
+    "topic": "/devices/dd1",
+    "dn": "",
+    "actions": [
+      { "act": "on", "topic": "/devices/${dn}/command", "message": "on" },
+      { "act": "off", "topic": "/devices/${dn}/command", "message": "off" }
+    ]
+  },
 
   "genrules": {
     "AI": { "cl": "SensorA" },
@@ -87,6 +116,19 @@
 
   "extrapattern": [
     {
+        "name": "desc",
+        "note": "Тип канала",
+        "type": "droplist",
+        "data": [
+          { "id": "DI", "name": "DI - Digital Input" },
+          { "id": "DO", "name": "DO - Digital Output" },
+          { "id": "AI", "name": "AI - Analog Input" },
+          { "id": "AO", "name": "AO - Analog Output (PWM)" },
+          { "id": "Meter", "name": "Meter - (IN)" }
+        ]
+      },
+
+    {
       "name": "dn",
       "note": "Устройство для публикации",
       "type": "autocomplete",
@@ -94,16 +136,45 @@
     },
     {
       "name": "topic",
-      "note": "Топик",
+      "note": "Топик - публикация состояния",
       "type": "string"
     },
     {
-        "name": "calc",
-        "note": "Формула для payload",
-        "type": "string"
+      "name": "calc",
+      "note": "Формула для payload",
+      "type": "string"
+    },
+    {
+      "name": "actions",
+      "tabnote": "Входящие команды",
+      "note": "Команда",
+      "type": "multi",
+      "visible": "data.desc == \"DO\" || data.desc == \"AO\"",
+      "data": {
+        "scheme": {
+         
+          "topic": { "name": "Topic", "type": "STRING", "order": 1 },
+          "message": { "name": "Сообщение", "type": "STRING", "order": 2 },
+          "act": { "name": "Выполнить команду", "type": "STRING", "order": 0 }
+        },
+        "default": {
+          "act": "on",
+          "topic": "/devices/${dn}/command",
+          "message": "on"
+        }
+      }
     }
   ],
-  "extradefault": { "dn": "", "topic": "/devices/${dn}", "calc":"" },
+  "extradefault": {
+    "desc":"DI",  
+    "dn": "",
+    "topic": "/devices/${dn}",
+    "calc": "",
+    "actions": [
+      { "act": "on", "topic": "/devices/${dn}/command", "message": "on" },
+      { "act": "off", "topic": "/devices/${dn}/command", "message": "off" }
+    ]
+  },
 
   "actions": [{}]
 }

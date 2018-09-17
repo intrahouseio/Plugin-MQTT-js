@@ -17,14 +17,10 @@ const defaultPluginParams = {
 const plugin = require("./lib/plugin").Plugin(defaultPluginParams);
 
 // Wraps a client connection to an MQTT broker
-const agent = require("./lib/agent");
+const agent = require("./lib/agent").Agent();
 
 // Converts incoming and outgoing messages
 const converter = require("./lib/converter");
-
-
-
-agent.start(plugin);
 
 
 plugin.log("Mqtt client has started.");
@@ -43,11 +39,6 @@ plugin.on("config", data => {
   converter.createSubMap(data);
 });
 
-plugin.on("connect", () => {
-  // На каналы нужно подписаться - массив топиков для подписки - выделить темы
-  agent.subscribe(converter.getSubMapTopics());
-});
-
 // Массив для публикации данных
 plugin.on("extra", data => {
   converter.saveExtra(data);
@@ -61,34 +52,69 @@ plugin.on("extra", data => {
 plugin.on("sub", data => {
   // Получили данные от сервера по подписке - отправить брокеру
   if (!data) return;
-  
+
   data.forEach(item => {
     try {
       let pobj = converter.convertOutgoing(item.dn, item.val);
       if (pobj) agent.publish(pobj.topic, pobj.message);
     } catch (e) {
-      plugin.log("Publish error for dn="+item.dn+" value="+item.val+" : "+JSON.stringify(e));
+      plugin.log(
+        "Publish error for dn=" +
+          item.dn +
+          " value=" +
+          item.val +
+          " : " +
+          JSON.stringify(e)
+      );
     }
   });
 });
 
 plugin.on("act", data => {
-    // Получили от сервера команду(ы) для устройства - отправить брокеру
-    // Команда уже готова - там должен быть topic и message
-    if (!data) return;
-    
-    data.forEach(item => {
-      try {
-        
-        if (item.topic) agent.publish(item.topic, item.message || '');
-      } catch (e) {
-        plugin.log("Publish error act: topic="+item.topic+" message="+item.message+" : "+JSON.stringify(e));
-      }
-    });
+  // Получили от сервера команду(ы) для устройства - отправить брокеру
+  // Команда уже готова - там должен быть topic и message
+  if (!data) return;
+
+  data.forEach(item => {
+    try {
+      if (item.topic) agent.publish(item.topic, item.message || "");
+    } catch (e) {
+      plugin.log(
+        "Publish error act: topic=" +
+          item.topic +
+          " message=" +
+          item.message +
+          " : " +
+          JSON.stringify(e)
+      );
+    }
   });
+});
 
 function formDeviceFilter(data) {
   if (!data || !Array.isArray(data)) return;
   let res = data.filter(item => item.dn).map(item => item.dn);
   if (res && res.length > 0) return { dn: res.join(",") };
 }
+
+agent.on("connect", () => {
+  plugin.log("Connected!!");
+  // На каналы нужно подписаться - массив топиков для подписки - выделить темы
+  let topics = converter.getSubMapTopics();
+  plugin.log("Subscribe on  " + JSON.stringify(topics));
+  agent.subscribe(topics);
+});
+
+agent.on("offline", () => {
+  plugin.log("offline");
+});
+
+agent.on("log", text => {
+  plugin.log(text);
+});
+
+agent.on("data", (topic, message) => {
+  plugin.log("GET topic: "+topic+": " + message.toString());  
+  let data = converter.convertIncoming(topic, message.toString());
+  if (data) plugin.sendToServer("data", data);
+});

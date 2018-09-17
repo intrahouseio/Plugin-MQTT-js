@@ -8,7 +8,7 @@ ps.on("message", mes => {
     console.log("TYPE get mes.tablename=" + mes.tablename);
     switch (mes.tablename) {
       case "params":
-        ps.send({ type: "get", params: { host: "192.168.0.44", port: 1883 } });
+        ps.send({ type: "get", params: { host: "192.168.0.140", port: 1883 } });
         break;
 
       case "config":
