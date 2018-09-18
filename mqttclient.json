@@ -134,11 +134,11 @@
          
           "topic": { "name": "$topic", "type": "STRING", "order": 1 },
           "message": { "name": "$message", "type": "STRING", "order": 2 },
-          "act": { "name": "$action", "type": "STRING", "order": 0 }
+          "act": { "name": "$action", "type": "droplist", "order": 3, "data":[{"id":"on", "name":"on"}, {"id":"off", "name":"off"},{"id":"toggle", "name":"toggle"}] }
         },
         "default": {
           "act": "on",
-          "topic": "/devices/${dn}/command",
+          "topic": "/devices/dn/command",
           "message": "on"
         }
       }
@@ -147,11 +147,11 @@
   "extradefault": {
     "desc":"DI",  
     "dn": "",
-    "topic": "/devices/${dn}",
+    "topic": "/devices/dn",
     "calc": "",
     "actions": [
-      { "act": "on", "topic": "/devices/${dn}/command", "message": "on" },
-      { "act": "off", "topic": "/devices/${dn}/command", "message": "off" }
+      { "act": "on", "topic": "/devices/dn/command", "message": "on" },
+      { "act": "off", "topic": "/devices/dn/command", "message": "off" }
     ]
   },
 
