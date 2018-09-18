@@ -19,7 +19,7 @@
       "name": "use_password",
       "note": "$use_password",
       "type": "cb",
-      "val": "true"
+      "val": "false"
     },
     {
       "name": "login",
@@ -67,7 +67,7 @@
         },
         "default": {
           "act": "on",
-          "topic": "/devices/${dn}/command",
+          "topic": "/devices/dn/command",
           "message": "on"
         }
       }
@@ -77,11 +77,11 @@
   "chdefault": {
     "chan": 1,
     "desc": "DI",
-    "topic": "/devices/dd1",
+    "topic": "/devices/dn",
     "dn": "",
     "actions": [
-      { "act": "on", "topic": "/devices/${dn}/command", "message": "on" },
-      { "act": "off", "topic": "/devices/${dn}/command", "message": "off" }
+      { "act": "on", "topic": "/devices/dn/command", "message": "on" },
+      { "act": "off", "topic": "/devices/dn/command", "message": "off" }
     ]
   },
 
@@ -144,6 +144,7 @@
       }
     }
   ],
+  
   "extradefault": {
     "desc":"DI",  
     "dn": "",

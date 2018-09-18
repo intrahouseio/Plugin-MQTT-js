@@ -114,7 +114,7 @@ agent.on("log", text => {
 });
 
 agent.on("data", (topic, message) => {
-  plugin.log("GET topic: "+topic+": " + message.toString());  
+  plugin.log("GET: "+topic+" " + message.toString());  
   let data = converter.convertIncoming(topic, message.toString());
   if (data) plugin.sendToServer("data", data);
 });
