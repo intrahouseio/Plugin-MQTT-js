@@ -4,64 +4,43 @@
   "params": [
     {
       "name": "host",
-      "note": "A IP adress of MQTT broker",
+      "note": "$host",
       "type": "string",
       "val": "127.0.0.1"
     },
     {
       "name": "port",
-      "note": "A port of MQTT broker",
+      "note": "$port",
       "type": "number",
       "val": "1883"
     },
-    {
-      "name": "timeout",
-      "note": "A reconnection to broker timeout in seconds",
-      "type": "number",
-      "val": "1"
-    },
-    {
-      "name": "integration_period",
-      "note": "Period of intergration in seconds",
-      "type": "number",
-      "val": "1"
-    },
-    {
-      "name": "client_id",
-      "note": "MQTT client ID, max: 23 char.",
-      "type": "string",
-      "val": "intraclient1"
-    },
-    {
-      "name": "scheme",
-      "note": "MQTT schema for connection",
-      "type": "string",
-      "val": "tcp"
-    },
+    
     {
       "name": "use_password",
-      "note": "Is MQTT brocker using login and password for connection",
+      "note": "$use_password",
       "type": "cb",
       "val": "true"
     },
     {
       "name": "login",
-      "note": "Login for MQTT brocker",
+      "note": "$login",
       "type": "string",
-      "val": "login"
+      "val": "login",
+      "visible":"data.use_password"
     },
     {
       "name": "password",
-      "note": "Password for MQTT brocker",
+      "note": "$password",
       "type": "string",
-      "val": "password"
+      "val": "password",
+      "visible":"data.use_password"
     }
   ],
 
   "chpattern": [
     {
       "name": "desc",
-      "note": "Тип канала",
+      "note": "$type",
       "type": "droplist",
       "data": [
         { "id": "DI", "name": "DI - Digital Input" },
@@ -72,19 +51,19 @@
       ]
     },
 
-    { "name": "topic", "note": "Topic - состояние", "type": "STRING" },
+    { "name": "topic", "note": "$topic", "type": "STRING" },
 
     {
       "name": "actions",
-      "tabnote": "Исходящие команды",
-      "note": "Команда",
+      "tabnote": "$actions",
+      "note": "$action",
       "type": "multi",
       "visible": "data.desc == \"DO\" || data.desc == \"AO\"",
       "data": {
         "scheme": {
-          "act": { "name": "Команда", "type": "droplist", "order": 0, "data":[{"id":"on", "name":"on"}, {"id":"off", "name":"off"},{"id":"toggle", "name":"toggle"}] },
-          "topic": { "name": "Topic", "type": "STRING", "order": 1 },
-          "message": { "name": "Message", "type": "STRING", "order": 2 }
+          "act": { "name": "$action", "type": "droplist", "order": 0, "data":[{"id":"on", "name":"on"}, {"id":"off", "name":"off"},{"id":"toggle", "name":"toggle"}] },
+          "topic": { "name": "$topic", "type": "STRING", "order": 1 },
+          "message": { "name": "$message", "type": "STRING", "order": 2 }
         },
         "default": {
           "act": "on",
@@ -117,7 +96,7 @@
   "extrapattern": [
     {
         "name": "desc",
-        "note": "Тип канала",
+        "note": "$type",
         "type": "droplist",
         "data": [
           { "id": "DI", "name": "DI - Digital Input" },
@@ -130,32 +109,32 @@
 
     {
       "name": "dn",
-      "note": "Устройство для публикации",
+      "note": "$deviceForPublish",
       "type": "autocomplete",
       "data": "devicesdroplist"
     },
     {
       "name": "topic",
-      "note": "Топик - публикация состояния",
+      "note": "$topic",
       "type": "string"
     },
     {
       "name": "calc",
-      "note": "Формула для payload",
+      "note": "$calc",
       "type": "string"
     },
     {
       "name": "actions",
-      "tabnote": "Входящие команды",
-      "note": "Команда",
+      "tabnote": "$actions",
+      "note": "$action",
       "type": "multi",
       "visible": "data.desc == \"DO\" || data.desc == \"AO\"",
       "data": {
         "scheme": {
          
-          "topic": { "name": "Topic", "type": "STRING", "order": 1 },
-          "message": { "name": "Сообщение", "type": "STRING", "order": 2 },
-          "act": { "name": "Выполнить команду", "type": "STRING", "order": 0 }
+          "topic": { "name": "$topic", "type": "STRING", "order": 1 },
+          "message": { "name": "$message", "type": "STRING", "order": 2 },
+          "act": { "name": "$action", "type": "STRING", "order": 0 }
         },
         "default": {
           "act": "on",

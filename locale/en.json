@@ -1,3 +1,17 @@
 {
-    
+    "host":"MQTT broker IP",
+    "port":"MQTT broker port",
+    "use_password":"Use authentication",
+    "login":"Login",
+    "password":"Password",
+    "type":"Channel type",
+    "topic":"Topic",
+    "message":"Message",
+    "actions":"Actions",
+    "action":"Action",
+   
+    "deviceForPublish":"Device for publishing",
+    "calc":"Expression for message calculating"
+
+
 }
