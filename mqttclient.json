@@ -1,6 +1,8 @@
 {
   "description": "MQTT client",
   "module": "mqttclient.js",
+  "restartOnChannelsChange": 1,
+  
   "params": [
     {
       "name": "host",
@@ -22,7 +24,7 @@
       "val": "false"
     },
     {
-      "name": "login",
+      "name": "username",
       "note": "$login",
       "type": "string",
       "val": "login",
@@ -144,7 +146,7 @@
       }
     }
   ],
-  
+
   "extradefault": {
     "desc":"DI",  
     "dn": "",
