@@ -18,7 +18,6 @@ const defaultPluginParams = {
 */
 
 // Standard IH plugin
-// const plugin = require("./lib/plugin").Plugin(defaultPluginParams);
 const manifest = path.join(__dirname, "mqttclient.json");
 const plugin = require("./lib/plugin").Plugin(manifest);
 
@@ -147,7 +146,6 @@ agent.on("error", txt => {
 });
 
 /* Private functions */
-
 function logError(err, txt = "") {
   plugin.log(txt + " ERROR! " + JSON.stringify(err));
 }
