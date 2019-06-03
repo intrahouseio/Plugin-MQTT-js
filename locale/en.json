@@ -11,7 +11,7 @@
     "action":"Action",
    
     "deviceForPublish":"Device for publishing",
-    "calc":"Expression for message calculating"
-
-
+    "calc":"Expression for message calculating",
+    "startscene":"Run the script when getting the topic"
+    
 }

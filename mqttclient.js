@@ -135,8 +135,16 @@ agent.on("log", (text, level) => {
 });
 
 agent.on("data", (topic, message) => {
-  plugin.log("GET: " + topic + " " + message.toString(), 2);
-  let data = converter.convertIncoming(topic, message.toString());
+  message =   message.toString();
+  plugin.log("GET: " + topic + " " + message, 2);
+
+  if (converter.startsceneMap.has(topic)) {
+    converter.startsceneMap.get(topic).forEach( item => {
+        process.send({ type: "startscene", id: item, arg:{topic, message} });
+    });
+  }
+
+  let data = converter.convertIncoming(topic, message);
   if (data) plugin.sendToServer("data", data);
 });
 

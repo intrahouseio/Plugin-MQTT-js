@@ -2,7 +2,7 @@
   "description": "MQTT client",
   "module": "mqttclient.js",
   "restartOnChannelsChange": 1,
-  
+
   "params": [
     {
       "name": "host",
@@ -16,7 +16,7 @@
       "type": "number",
       "val": "1883"
     },
-    
+
     {
       "name": "use_password",
       "note": "$use_password",
@@ -28,14 +28,14 @@
       "note": "$login",
       "type": "string",
       "val": "login",
-      "visible":"data.use_password"
+      "visible": "data.use_password"
     },
     {
       "name": "password",
       "note": "$password",
       "type": "string",
       "val": "password",
-      "visible":"data.use_password"
+      "visible": "data.use_password"
     }
   ],
 
@@ -54,7 +54,12 @@
     },
 
     { "name": "topic", "note": "$topic", "type": "STRING" },
-
+    {
+      "name": "startscene",
+      "note": "$startscene",
+      "type": "droplist",
+      "data": "listfromworkscenes"
+    },
     {
       "name": "actions",
       "tabnote": "$actions",
@@ -63,7 +68,12 @@
       "visible": "data.desc == \"DO\" || data.desc == \"AO\"",
       "data": {
         "scheme": {
-          "act": { "name": "$action", "type": "droplist", "order": 0, "data":[{"id":"on", "name":"on"}, {"id":"off", "name":"off"},{"id":"toggle", "name":"toggle"}] },
+          "act": {
+            "name": "$action",
+            "type": "droplist",
+            "order": 0,
+            "data": [{ "id": "on", "name": "on" }, { "id": "off", "name": "off" }, { "id": "toggle", "name": "toggle" }]
+          },
           "topic": { "name": "$topic", "type": "STRING", "order": 1 },
           "message": { "name": "$message", "type": "STRING", "order": 2 }
         },
@@ -97,17 +107,17 @@
 
   "extrapattern": [
     {
-        "name": "desc",
-        "note": "$type",
-        "type": "droplist",
-        "data": [
-          { "id": "DI", "name": "DI - Digital Input" },
-          { "id": "DO", "name": "DO - Digital Output" },
-          { "id": "AI", "name": "AI - Analog Input" },
-          { "id": "AO", "name": "AO - Analog Output (PWM)" },
-          { "id": "Meter", "name": "Meter - (IN)" }
-        ]
-      },
+      "name": "desc",
+      "note": "$type",
+      "type": "droplist",
+      "data": [
+        { "id": "DI", "name": "DI - Digital Input" },
+        { "id": "DO", "name": "DO - Digital Output" },
+        { "id": "AI", "name": "AI - Analog Input" },
+        { "id": "AO", "name": "AO - Analog Output (PWM)" },
+        { "id": "Meter", "name": "Meter - (IN)" }
+      ]
+    },
 
     {
       "name": "dn",
@@ -133,10 +143,14 @@
       "visible": "data.desc == \"DO\" || data.desc == \"AO\"",
       "data": {
         "scheme": {
-         
           "topic": { "name": "$topic", "type": "STRING", "order": 1 },
           "message": { "name": "$message", "type": "STRING", "order": 2 },
-          "act": { "name": "$action", "type": "droplist", "order": 3, "data":[{"id":"on", "name":"on"}, {"id":"off", "name":"off"},{"id":"toggle", "name":"toggle"}] }
+          "act": {
+            "name": "$action",
+            "type": "droplist",
+            "order": 3,
+            "data": [{ "id": "on", "name": "on" }, { "id": "off", "name": "off" }, { "id": "toggle", "name": "toggle" }]
+          }
         },
         "default": {
           "act": "on",
@@ -148,7 +162,7 @@
   ],
 
   "extradefault": {
-    "desc":"DI",  
+    "desc": "DI",
     "dn": "",
     "topic": "/devices/dn",
     "calc": "",
