@@ -79,7 +79,7 @@ plugin.on('act', data => {
   data.forEach(item => {
     try {
       if (item.topic) {
-        if (item.act == 'set' && (!item.message || item.message == 'value')) this.message = String(item.value);
+        if (item.act == 'set' && (!item.message || item.message == 'value')) item.message = String(item.value);
         agent.publish(item.topic, item.message || '');
       }
     } catch (e) {
