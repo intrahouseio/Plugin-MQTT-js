@@ -72,7 +72,7 @@
             "name": "$action",
             "type": "droplist",
             "order": 0,
-            "data": [{ "id": "on", "name": "on" }, { "id": "off", "name": "off" }, { "id": "toggle", "name": "toggle" }]
+            "data": [{ "id": "on", "name": "on" }, { "id": "off", "name": "off" }, { "id": "toggle", "name": "toggle" }, { "id": "set", "name": "set" }]
           },
           "topic": { "name": "$topic", "type": "STRING", "order": 1 },
           "message": { "name": "$message", "type": "STRING", "order": 2 }
@@ -149,7 +149,7 @@
             "name": "$action",
             "type": "droplist",
             "order": 3,
-            "data": [{ "id": "on", "name": "on" }, { "id": "off", "name": "off" }, { "id": "toggle", "name": "toggle" }]
+            "data": [{ "id": "on", "name": "on" }, { "id": "off", "name": "off" }, { "id": "toggle", "name": "toggle" },{ "id": "set", "name": "set" }]
           }
         },
         "default": {
