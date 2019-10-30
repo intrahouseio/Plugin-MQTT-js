@@ -135,7 +135,7 @@ agent.on('log', (text, level) => {
 
 agent.on('data', (topic, message) => {
   message = message.toString();
-  plugin.log('GET: ' + topic + ' ' + message, 2);
+  plugin.log('GET: ' + topic + ' ' + message, 1);
 
   if (converter.startsceneMap.has(topic)) {
     converter.startsceneMap.get(topic).forEach(item => {
@@ -144,8 +144,30 @@ agent.on('data', (topic, message) => {
   }
 
   let data = converter.convertIncoming(topic, message);
-  if (data) plugin.sendToServer('data', data);
+  // plugin.log('SEND topic: ' + topic + 'data:' + util.inspect(data), 1);
+  if (data) {
+    // Если value - это объект и нужно извлекать время - в каждом элементе извлечь время
+    if (plugin.params.extract_ts && plugin.params.ts_field) processTimestamp(data);
+    plugin.sendToServer('data', data);
+  }
 });
+
+function processTimestamp(data) {
+  const ts_field = plugin.params.ts_field;
+  data.forEach(item => {
+    if (item.value) {
+      try {
+        let vobj = JSON.parse(item.value);
+        if (vobj[ts_field]) {
+          item.ts = new Date(vobj.ts).getTime();
+        }
+
+      } catch(e) {
+        plugin.log('Time process error, expected JSON with "'+ts_field+'" property');
+      }
+    }
+  })
+}
 
 // Фатальная ошибка - выход плагина
 agent.on('error', txt => {

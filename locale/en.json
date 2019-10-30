@@ -12,6 +12,8 @@
    
     "deviceForPublish":"Device for publishing",
     "calc":"Expression for message calculating",
-    "startscene":"Run the script when getting the topic"
+    "startscene":"Run the script when getting the topic",
+    "extract_ts":"Extract time from message (for JSON messages)",
+    "ts_field":"Time property"
     
 }

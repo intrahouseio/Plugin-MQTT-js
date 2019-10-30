@@ -36,7 +36,21 @@
       "type": "string",
       "val": "password",
       "visible": "data.use_password"
+    },
+    {
+      "name": "extract_ts",
+      "note": "$extract_ts",
+      "type": "cb",
+      "val": "false"
+    },
+    {
+      "name": "ts_field",
+      "note": "$ts_field",
+      "type": "string",
+      "val": "ts",
+      "visible": "data.extract_ts"
     }
+
   ],
 
   "chpattern": [
