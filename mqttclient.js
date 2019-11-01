@@ -80,7 +80,8 @@ plugin.on('act', data => {
     try {
       if (item.topic) {
         if (item.act == 'set' && (!item.message || item.message == 'value')) item.message = String(item.value);
-        agent.publish(item.topic, item.message || '');
+        const func = new Function('value', 'return `' + item.message + '`;')
+        agent.publish(item.topic, func(item.value) || '');
       }
     } catch (e) {
       logError(e, `Publish topic ${item.topic} message ${item.message}`);
