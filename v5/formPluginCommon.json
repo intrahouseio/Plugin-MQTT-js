@@ -1,7 +1,8 @@
 {
   "grid": [
-    { "id": "p1", "xs": 6, "class": "main", "table": "units" },
-    { "id": "p2", "xs": 6, "class": "main", "table": "units" },
+    { "id": "p1", "xs": 4, "class": "main", "table": "units" },
+    { "id": "p2", "xs": 4, "class": "main", "table": "units" },
+    { "id": "p3", "xs": 4, "class": "main", "table": "units" },
     { "id": "p9", "xs": 12, "class": "main", "table": "unitsTreeTable", "height": "fill" }
   ],
 
@@ -13,13 +14,13 @@
       "prop": "host",
       "title": "$host",
       "type": "input",
-      "val": "127.0.0.1"
+      "default": "127.0.0.1"
     },
     {
       "prop": "port",
       "title": "$port",
       "type": "input",
-      "val": "1883"
+      "default": "1883"
     }
   ],
   "p2": [
@@ -27,21 +28,36 @@
       "prop": "use_password",
       "title": "$use_password",
       "type": "cb",
-      "val": "false"
+      "default": 0
     },
     {
       "prop": "username",
       "title": "$login",
       "type": "input",
-      "val": "login",
+      "default": "login",
       "hide": "!data.p2.use_password"
     },
     {
       "prop": "password",
       "title": "$password",
-      "type": "input",
-      "val": "password",
+      "type": "password",
+      "default": "password",
       "hide": "!data.p2.use_password"
+    }
+  ],
+  "p3": [
+    {
+      "prop": "extract_ts",
+      "title": "$extract_ts",
+      "type": "cb",
+      "default": 0
+    },
+    {
+      "prop": "ts_field",
+      "title": "$ts_field",
+      "type": "input",
+      "default": "ts",
+      "hide": "!data.p3.extract_ts"
     }
   ],
   "p9": [

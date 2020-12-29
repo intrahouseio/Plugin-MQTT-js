@@ -79,9 +79,13 @@ plugin.on('act', data => {
   data.forEach(item => {
     try {
       if (item.topic) {
-        if (item.act == 'set' && (!item.message || item.message == 'value')) item.message = String(item.value);
+        // if (item.act == 'set' && (!item.message || item.message == 'value')) item.message = String(item.value);
+        if (!item.message || item.message == 'value') item.message = String(item.value);
+
         const func = new Function('value', 'return `' + item.message + '`;')
-        agent.publish(item.topic, func(item.value) || '');
+        const message = func(item.value) || '';
+        agent.publish(item.topic,  message);
+        plugin.log('PUBLISH: '+item.topic+' '+ message);
       }
     } catch (e) {
       logError(e, `Publish topic ${item.topic} message ${item.message}`);
