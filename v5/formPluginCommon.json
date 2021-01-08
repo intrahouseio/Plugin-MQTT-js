@@ -43,9 +43,8 @@
       "type": "password",
       "default": "password",
       "hide": "!data.p2.use_password"
-    }
-  ],
-  "p3": [
+    },
+ 
     {
       "prop": "extract_ts",
       "title": "$extract_ts",
@@ -59,6 +58,16 @@
       "default": "ts",
       "hide": "!data.p3.extract_ts"
     }
+  ],
+  "p3": [
+    {
+      "prop": "restarttime",
+      "title": "$Unit_Restarttime",
+      "type": "input",
+      "default": 5
+    },
+    { "prop": "loglevel", "title": "$LogLevel", "type": "droplist", "data": "loglevelList" },
+    { "prop": "txt", "title": "$Comment", "type": "input" }
   ],
   "p9": [
     {
