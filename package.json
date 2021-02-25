@@ -4,7 +4,7 @@
   "description": "Mqtt client",
   "main": "mqtt.js",
   "dependencies": {
-    "mqtt": "^2.18.3"
+    "mqtt": "^4.2.6"
   },
   "devDependencies": {
     "mocha": "^4.1.0",

@@ -64,7 +64,8 @@ plugin.on('sub', data => {
   data.forEach(item => {
     try {
       let pobj = converter.convertOutgoing(item.dn, item.val);
-      if (pobj) agent.publish(pobj.topic, pobj.message);
+      if (pobj) agent.publish(pobj.topic, pobj.message, pobj.options);
+      //plugin.log('Pobj '+JSON.stringify(pobj));
     } catch (e) {
       logError(e, `Publish dn=${item.dn} value=${item.val}`);
     }

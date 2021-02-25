@@ -150,6 +150,22 @@
       "type": "string"
     },
     {
+      "name": "retain",
+      "note": "Retain",
+      "type": "cb",
+      "val": "false"
+    },
+    {
+      "name": "qos",
+      "note": "QoS",
+      "type": "droplist",
+      "data": [
+        { "id": 0, "name": "QoS 0 - At most once" },
+        { "id": 1, "name": "QoS 1 - At least once" },
+        { "id": 2, "name": "QoS 2 - Exactly once" }
+      ]
+    },
+    {
       "name": "actions",
       "tabnote": "$actions",
       "note": "$action",
@@ -180,6 +196,8 @@
     "dn": "",
     "topic": "/devices/dn",
     "calc": "",
+    "retain": false,
+    "qos":0,
     "actions": [
       { "act": "on", "topic": "/devices/dn/command", "message": "on" },
       { "act": "off", "topic": "/devices/dn/command", "message": "off" }
