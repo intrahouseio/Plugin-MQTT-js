@@ -64,7 +64,8 @@ plugin.on('sub', data => {
   data.forEach(item => {
     try {
       let pobj = converter.convertOutgoing(item.dn, item.val);
-      if (pobj) agent.publish(pobj.topic, pobj.message);
+      if (pobj) agent.publish(pobj.topic, pobj.message, pobj.options);
+      //plugin.log('Pobj '+JSON.stringify(pobj));
     } catch (e) {
       logError(e, `Publish dn=${item.dn} value=${item.val}`);
     }
@@ -94,7 +95,7 @@ plugin.on('act', data => {
 });
 
 plugin.on('command', message => {
-  // Получили от сервера сообщение {type:'command', command:'publish', data:{topic, message}}
+  // Получили от сервера сообщение {type:'command', command:'publish', data:{topic, message, options}}
   if (!message) return;
   let data;
   switch (message.command) {
@@ -105,7 +106,7 @@ plugin.on('command', message => {
       data = !Array.isArray(message.data) ? [message.data] : message.data;
       data.forEach(item => {
         try {
-          if (item.topic) agent.publish(item.topic, item.message || '');
+          if (item.topic) agent.publish(item.topic, item.message || '', item.options || {});
         } catch (e) {
           logError(e, `Publish topic ${item.topic} message ${item.message}`);
         }
