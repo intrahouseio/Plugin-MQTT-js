@@ -28,6 +28,10 @@ const agent = require('./lib/agent').Agent();
 const converter = require('./lib/converter');
 
 plugin.log('Mqtt client has started.', 0);
+
+sendProcessInfo();
+setInterval(sendProcessInfo, 10000);
+
 plugin.getFromServer('params');
 
 /* Plugin event listeners */
@@ -120,6 +124,14 @@ plugin.on('command', message => {
 plugin.on('exit', () => {
   processExit(0);
 });
+
+function sendProcessInfo() {
+  const mu = process.memoryUsage();
+  const memrss = Math.floor(mu.rss/1024)
+  const memheap = Math.floor(mu.heapTotal/1024)
+  const memhuse = Math.floor(mu.heapUsed/1024)
+  process.send({type:'procinfo', data:{memrss,memheap, memhuse }});
+}
 
 /* Agent event listeners */
 agent.on('connect', () => {
